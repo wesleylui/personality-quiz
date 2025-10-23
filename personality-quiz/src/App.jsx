@@ -1,5 +1,10 @@
 import React, { useEffect, useState, useMemo } from "react";
 import "./App.css";
+import Header from "./components/Header";
+import { UserProvider } from "./components/UserContext";
+import UserForm from "./components/UserForm";
+import { Question } from "./components/Questions";
+import Results from "./components/Results";
 
 function App() {
 	const [count, setCount] = useState(0);
@@ -149,30 +154,29 @@ function App() {
 	}
 
 	return (
-		<div>
-			<h2>Personality Quiz</h2>
-			<section style={{ marginTop: 20 }}>
-				<div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-					<button onClick={() => fetchArtwork()}>Fetch Met Image</button>
-				</div>
-				{metLoading && <p>Loading artwork…</p>}
-				{metError && <p style={{ color: "crimson" }}>Error: {metError}</p>}
-				{artwork && (
-					<div style={{ marginTop: 12 }}>
-						<h4>{artwork.title}</h4>
-						<p>
-							{artwork.artist} — {artwork.date}
-						</p>
-						<img
-							src={artwork.imageUrl}
-							alt={artwork.title}
-							style={{ maxWidth: "100%" }}
-						/>
-						<p style={{ fontSize: 12, color: "#666" }}>{artwork.creditLine}</p>
-					</div>
-				)}
-			</section>
-		</div>
+		<UserProvider value={{ name: userName, setName: setUserName }}>
+			<Header />
+			<Routes>
+				<Route
+					path="/"
+					element={<UserForm onSubmit={handleUserFormSubmit} />}
+				/>
+				<Route
+					path="/quiz"
+					element={
+						currentQuestionIndex < questions.length ? (
+							<Question
+								question={questions[currentQuestionIndex].question}
+								options={questions[currentQuestionIndex].options}
+								onAnswer={handleAnswer}
+							/>
+						) : (
+							<Results element={element} artwork={artwork} />
+						)
+					}
+				/>
+			</Routes>
+		</UserProvider>
 	);
 }
 
