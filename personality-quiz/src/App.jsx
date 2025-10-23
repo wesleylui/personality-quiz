@@ -43,6 +43,30 @@ function App() {
     // Continue mapping all your possible options to a keyword
   };
 
+  // HANDLERS
+  // handle: click on an option
+  function handleAnswer(answer) {
+    setAnswers([...answers, answer]);
+    setCurrentQuestionIndex(currentQuestionIndex + 1);
+  }
+
+  // handle: submit the user's name
+  function handleUserFormSubmit(name) {
+    setUserName(name);
+  }
+
+  // handle: finish the quiz
+  function determineElement(answers) {
+    const counts = {};
+    answers.forEach(function (answer) {
+      const element = elements[answer];
+      counts[element] = (counts[element] || 0) + 1;
+    });
+    return Object.keys(counts).reduce(function (a, b) {
+      return counts[a] > counts[b] ? a : b;
+    });
+  }
+
   return (
     <div>
       <h2>Personality Quiz</h2>
