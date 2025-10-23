@@ -21,13 +21,12 @@ export default function UserForm() {
 
   return (
     <form onSubmit={handleSubmit} className="user-form">
-      <label htmlFor="name">Enter your name:</label>
+      <label htmlFor="name">Name:</label>
       <input
         id="name"
         type="text"
         value={inputName}
         onChange={(e) => setInputName(e.target.value)}
-        placeholder="Your name"
         required
       />
       <button type="submit" disabled={!inputName.trim()}>
